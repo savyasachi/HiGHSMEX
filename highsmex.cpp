@@ -1021,7 +1021,7 @@ class MexFunction : public Function {
 		}
 
 		if (setToDefault) {
-			highsModel.lp_.integrality_.assign(highsModel.lp_.num_col_, HighsVarType::kContinuous);
+			highsModel.lp_.integrality_ = {};
 		}
 		else {
 			const TypedArray<MATLABString> integralityStrings(inputs[7]);
