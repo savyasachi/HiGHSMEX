@@ -311,7 +311,7 @@ StructArray highsInfoToMatlabStruct(const Highs& highs) {
 		"max_relative_dual_residual_error", "num_complementarity_violations", "max_complementarity_violation",
 		"primal_dual_objective_error", "primal_dual_integral",
 		// These fields are extra. They are added by highsmex.
-		"primal_solution_status_string", "dual_solution_status_string", "basis_validity_string", "model_status_string" });
+		"primal_solution_status_string", "dual_solution_status_string", "basis_validity_string", "model_status_string", "run_time" });
 	auto const& info = highs.getInfo();
 	out[0]["valid"] = factory.createScalar(info.valid);
 	out[0]["mip_node_count"] = factory.createScalar(info.mip_node_count);
@@ -354,6 +354,7 @@ StructArray highsInfoToMatlabStruct(const Highs& highs) {
 	out[0]["dual_solution_status_string"] = factory.createScalar(highs.solutionStatusToString(info.dual_solution_status));
 	out[0]["basis_validity_string"] = factory.createScalar(highs.basisValidityToString(info.basis_validity));
 	out[0]["model_status_string"] = factory.createScalar(highs.modelStatusToString(highs.getModelStatus()));
+	out[0]["run_time"] = factory.createScalar(highs.getRunTime());
 
 	return out;
 }
