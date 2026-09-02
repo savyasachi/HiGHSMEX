@@ -95,7 +95,12 @@ runs:
       shell: bash
       run: |
         $ML_CMD "fprintf('HiGHS Version: %s\nHiGHSMEX Version: %s\n', callhighs(string('ver')), verHiGHSMEX)"
-        $ML_CMD "c = [1;1]; soln=callhighs(c, c', 2, 2, c, c);"
+        $ML_CMD "nFail = test_callhighs(); assert(nFail == 0, '%d check(s) failed', nFail)"
+
+    - name: Check IIS MEX functionality
+      shell: bash
+      run: |
+        $ML_CMD "nFail = test_callhighs_iis(); assert(nFail == 0, '%d check(s) failed', nFail)"
 
     - uses: actions/upload-artifact@v4
       if: runner.os == 'Linux'
@@ -114,3 +119,21 @@ runs:
       with:
         name: highsmex.mexw64
         path: highsmex.mexw64
+
+    - uses: actions/upload-artifact@v4
+      if: runner.os == 'Linux'
+      with:
+        name: highsmex_iis.mexa64
+        path: highsmex_iis.mexa64
+
+    - uses: actions/upload-artifact@v4
+      if: runner.os == 'macOS'
+      with:
+        name: highsmex_iis.mexmaca64
+        path: highsmex_iis.mexmaca64
+
+    - uses: actions/upload-artifact@v4
+      if: runner.os == 'Windows'
+      with:
+        name: highsmex_iis.mexw64
+        path: highsmex_iis.mexw64
