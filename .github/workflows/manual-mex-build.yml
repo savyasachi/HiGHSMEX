@@ -6,7 +6,7 @@ on:
       highs_version:
         description: "HiGHS version to use for MEX build"
         required: true
-        default: "1.15.1"
+        default: "1.16.0"
       build_linux:
         required: true
         type: boolean

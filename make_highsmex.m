@@ -5,7 +5,7 @@ function make_highsmex(highs_ver, mexSrcFiles)
 %   highsmex      - the solver interface, used by callhighs
 %   highsmex_iis  - the IIS interface, used by callhighs_iis
 % Pass mexSrcFiles to build only some of them, e.g.
-%   make_highsmex('1.15.1', 'highsmex.cpp')
+%   make_highsmex('1.16.0', 'highsmex.cpp')
 %
 % Author: Savyasachi Singh
 % Modified by: Ray Zimmerman
@@ -15,7 +15,7 @@ function make_highsmex(highs_ver, mexSrcFiles)
 
 %% Inputs
 if nargin < 1 || isempty(highs_ver)
-    highs_ver = '1.15.1';
+    highs_ver = '1.16.0';
 end
 if nargin < 2 || isempty(mexSrcFiles)
     mexSrcFiles = {'highsmex.cpp', 'highsmex_iis.cpp'};
