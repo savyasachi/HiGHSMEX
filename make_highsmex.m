@@ -1,5 +1,11 @@
-function make_highsmex(highs_ver)
-% This function builds the MEX file.
+function make_highsmex(highs_ver, mexSrcFiles)
+% This function builds the MEX files.
+%
+% By default both mex files of the project are built
+%   highsmex      - the solver interface, used by callhighs
+%   highsmex_iis  - the IIS interface, used by callhighs_iis
+% Pass mexSrcFiles to build only some of them, e.g.
+%   make_highsmex('1.15.1', 'highsmex.cpp')
 %
 % Author: Savyasachi Singh
 % Modified by: Ray Zimmerman
@@ -8,8 +14,13 @@ function make_highsmex(highs_ver)
 % See https://github.com/savyasachi/HiGHSMEX for more information.
 
 %% Inputs
-if nargin < 1
+if nargin < 1 || isempty(highs_ver)
     highs_ver = '1.15.1';
+end
+if nargin < 2 || isempty(mexSrcFiles)
+    mexSrcFiles = {'highsmex.cpp', 'highsmex_iis.cpp'};
+elseif ~iscell(mexSrcFiles)
+    mexSrcFiles = {mexSrcFiles};
 end
 
 % Path to HiGHS official binary HiGHS distribution, including HiPO solver.
@@ -24,10 +35,9 @@ end
 highsInstallDir = fullfile('..', ...
     sprintf('highs-%s-%s-static-apache', highs_ver, arch));
 
-%% Paths to HiGHS include & lib dirs and HIGHSMEX source file
+%% Paths to HiGHS include & lib dirs
 highsIncludeDir = fullfile(highsInstallDir, 'include', 'highs');
 highsLibDir = fullfile(highsInstallDir, 'lib');
-mexSrcFilePath = fullfile('.', 'highsmex.cpp');
 
 %% Platform specific compiler, linker flags
 compilerInfo=mex.getCompilerConfigurations('C++', 'Selected');
@@ -54,9 +64,13 @@ if vstr2num(highs_ver) > 1.015
     compflags = {'-lhighs_extras', compflags{:}};
 end
 
-%% Build mex file
-mex(mexSrcFilePath, '-R2018a', sprintf('-I"%s"', highsIncludeDir), ...
-    sprintf('-L"%s"', highsLibDir), '-lhighs', compflags{:});
+%% Build mex files
+for k = 1:length(mexSrcFiles)
+    mexSrcFilePath = fullfile('.', mexSrcFiles{k});
+    fprintf('\n=== Building %s ===\n', mexSrcFiles{k});
+    mex(mexSrcFilePath, '-R2018a', sprintf('-I"%s"', highsIncludeDir), ...
+        sprintf('-L"%s"', highsLibDir), '-lhighs', compflags{:});
+end
 
 
 function num = vstr2num(vstr)
