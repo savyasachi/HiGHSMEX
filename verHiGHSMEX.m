@@ -6,6 +6,6 @@ function ver = verHiGHSMEX()
 % Covered by the MIT License (see LICENSE file for details).
 % See https://github.com/savyasachi/HiGHSMEX for more information.
 
-ver = "1.5.2";
+ver = "1.6.0";
 
 % EOF
